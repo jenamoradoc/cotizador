@@ -1,11 +1,41 @@
 import React, { Component } from 'react';
 import Header from './Header'
 import Formulario from './Formulario';
+import { obtenerDiferenciaAnio, calcularMarca, obtenerPlan } from '../helper'
 
 class App extends Component {
 
+  state = {
+    resultado: '',
+    datos:{}
+  }
+
   cotizarSeguro = (datos) =>{
-    console.log(datos);
+   const {marca, plan, year} = datos;
+
+    //costo base de 2000
+    let resultado = 2000;
+    //obtener la diferencia entre año 
+    const diferencia = obtenerDiferenciaAnio(year);
+    //por cada año de diferencia se resta el 3% de el valor de el seguro
+    resultado -=((diferencia * 3) * resultado)/100;
+    //Incremento por marca asiatico 5%, americano 15% y eruropeo 30% del valor actual
+    resultado = calcularMarca(marca) * resultado;
+    //consultamos que plan fue el seleccionado y lo guardamos
+    let incrementoPlan = obtenerPlan(plan)
+    //dependiendo de la covertura de plan hay un incremento en el valor de 20% (basico) y 50% (completo) 
+    resultado = parseFloat(incrementoPlan * resultado).toFixed('2');
+    //crear el objeto para el resumen
+    const datosAuto = {
+      marca: marca,
+      plan: plan,
+      year: year
+    }
+    //guardar resultado como state
+    this.setState({
+      resultado: resultado,
+      datos:datosAuto
+    })
   }
 
   render() {
