@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { obtenerDiferenciaAnio, calcularMarca, obtenerPlan } from '../helper'
 import Header from './Header'
 import Formulario from './Formulario';
-import { obtenerDiferenciaAnio, calcularMarca, obtenerPlan } from '../helper'
+import Resumen from './Resumen';
+import Resultado from './Resultado';
+
 
 class App extends Component {
 
@@ -24,7 +27,7 @@ class App extends Component {
     //consultamos que plan fue el seleccionado y lo guardamos
     let incrementoPlan = obtenerPlan(plan)
     //dependiendo de la covertura de plan hay un incremento en el valor de 20% (basico) y 50% (completo) 
-    resultado = parseFloat(incrementoPlan * resultado).toFixed('2');
+    resultado = parseFloat(incrementoPlan * resultado).toFixed('2');//mostrar maximo dos decimales 
     //crear el objeto para el resumen
     const datosAuto = {
       marca: marca,
@@ -47,6 +50,13 @@ class App extends Component {
         <div className="contenedor-formulario">
           <Formulario
             cotizarSeguro={this.cotizarSeguro}
+          />
+          <Resumen
+            datos={this.state.datos}
+            resultado={this.state.resultado}
+          />
+          <Resultado
+            resultado= {this.state.resultado}
           />
         </div>
       </div>
